@@ -1,0 +1,32 @@
+<nav class="navbar navbar-expand-md navbar-dark bg-primary mb-4">
+  <div class="container">
+    <a routerLink="" class="navbar-brand">Cart Tracking</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMain">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarMain">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item" *ngIf="!isLoggedIn || user.canCreate">
+          <a routerLink="/history" class="nav-link">History</a>
+        </li>
+        <!-- <li class="nav-item" *ngIf="user.canCreate">
+          <a routerLink="/processors" class="nav-link">Processors</a>
+        </li>
+        <li class="nav-item" *ngIf="user.canCreate">
+          <a routerLink="/processor" class="nav-link">Cart Processing</a>
+        </li> -->
+      </ul>
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item" *ngIf="!isLoggedIn">
+          <a routerLink="/login" class="nav-link">Login</a>
+        </li>
+        <li class="nav-item" *ngIf="isLoggedIn && user.canCreate">
+          <a routerLink="/settings" class="nav-link">Settings</a>
+        </li>
+        <li class="nav-item" *ngIf="isLoggedIn">
+          <a href="/" class="nav-link" (click)="onLogoutClick()">Logout</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

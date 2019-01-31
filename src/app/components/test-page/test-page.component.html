@@ -1,0 +1,62 @@
+<div class="row">
+    <div class="col-6">
+      <h2><i class="fa fa-shopping-cart"></i> Carts</h2>
+    </div>
+    <div class="col-6">
+      <h5 class="text-right text-secondary">{{ date | date:"fullDate" }}</h5>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-8">
+      <h5 class="text-secondary"><i class="fa fa-clock-o"></i> {{ average }} minutes per cart</h5>
+    </div>
+    <div class="col-4">
+      <h5 class="text-right" (click)="showMore = !showMore">
+        <i [ngClass]="showMore ? 'fa fa-minus-circle' : 'fa fa-plus-circle'"></i>
+        <span *ngIf="!showMore"> More Info</span>
+        <span *ngIf="showMore"> Less Info</span>
+      </h5>
+    </div>
+  </div>
+  <div class="table-responsive">
+    <table *ngIf="carts?.length > 0; else noCarts" class="table table-striped">
+      <thead class="thead-dark">
+        <tr>
+          <th></th>
+          <th *ngIf="isLoggedIn"></th>
+          <th>Picker</th>
+          <th>Picked</th>
+          <th>Processor</th>
+          <th>Given</th>
+          <th>Finished</th>      
+          <th>#</th>
+          <th *ngIf="showMore">Time</th>
+          <th *ngIf="showMore">Type</th>      
+          <th *ngIf="showMore">Notes</th>
+          <th *ngIf="isLoggedIn"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let cart of carts">
+          <td>{{ cart.index }}</td>
+          <td *ngIf="isLoggedIn" class="pencil"><i class="fa fa-pencil fa-2x" (click)="onSelect(cart)"></i></td>      
+          <td>{{ cart.picker }}</td>
+          <td>{{ cart.timePick }}</td>
+          <td>{{ cart.processor }}</td>
+          <td>{{ cart.timeStart }}</td>
+          <td>{{ cart.timeFinish }}</td>
+          <td>{{ cart.cartNumber }}</td>
+          <td *ngIf="showMore">{{ cart.time }} mins</td>
+          <td *ngIf="showMore">{{ cart.type }}</td>
+          <td *ngIf="showMore">{{ cart.notes }}</td>
+          <td *ngIf="isLoggedIn"><i class="fa fa-trash" (click)="onDelete(cart)"></i></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+  <ng-template #noCarts>
+    <hr>
+    <h5>There are no carts in the system for today</h5>
+  </ng-template>
+  

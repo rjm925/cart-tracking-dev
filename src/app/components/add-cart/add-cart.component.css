@@ -1,0 +1,33 @@
+.card-body {
+  padding: 10px;
+}
+.form-group {
+  margin-bottom: 5px;
+}
+
+.btn {
+  margin-top: 10px;
+}
+
+label {
+  margin-right: 3px;
+}
+
+.form-control {
+  margin-right: 25px;
+}
+
+.row.ml-1 {
+  width: 100%;
+}
+
+input[name="cartNumber"] {
+  width: 75px;
+}
+
+@media only screen and (min-width: 600px) {
+  .card.mb-3 {
+    width: 600px;
+    margin: auto;
+  }
+}

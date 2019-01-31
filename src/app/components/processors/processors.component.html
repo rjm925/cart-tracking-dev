@@ -1,0 +1,71 @@
+<div class="card mb-3" id="search">
+  <div class="card-header">
+    Search
+  </div>
+  <div class="card-body">
+    <form #searchForm="ngForm" class="form-inline">
+      <div class="form-group">
+        <label for="name" class="mr-1">Name</label>
+        <select
+          name="name"
+          class="form-control"
+          [(ngModel)]="name"
+          (change)="getCarts()"
+        >
+          <option value=""></option>
+          <optgroup *ngIf="testers?.length > 0" label="Testers">
+              <option *ngFor="let tester of testers" value="Tester - {{ tester.name }}">{{ tester.name }}</option>
+          </optgroup>  
+          <optgroup label="Employees">
+              <option *ngFor="let employee of employees" value="{{ employee.name }}">{{ employee.name }}</option>
+          </optgroup>
+        </select>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="row" *ngIf="name != ''">
+  <div class="col-6">
+    <h5>{{ name }}</h5>
+  </div>
+  <div class="col-6">
+    <h5 class="text-secondary text-right">{{ date | date:"fullDate" }}</h5>
+  </div>
+</div>
+<div class="row" *ngIf="name != ''">
+  <div class="col-md-6">
+    <h2><i class="fa fa-shopping-cart"></i><strong> Cart Number {{ currentCart.cartNumber }}</strong></h2>
+  </div>
+  <div class="col-md-6">
+    <h5 class="text-right text-secondary"><i class="fa fa-clock-o"></i> {{ this.average }} minutes per cart</h5>
+  </div>
+</div>
+<div class="table-responsive" *ngIf="name != ''">
+  <table *ngIf="carts?.length > 0; else noCarts" class="table table-striped table-sm">
+    <thead class="thead-dark">
+      <tr>
+        <th>#</th>
+        <th>Given</th>
+        <th>Finished</th>          
+        <th>Time</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let cart of carts">      
+        <td>{{ cart.cartNumber }}</td>  
+        <td>{{ displayStart(cart) }}</td>
+        <td>{{ displayFinish(cart) }}</td>   
+        <td>{{ cart.time }} mins</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<ng-template #noCarts>
+  <hr>
+  <h5>There are no carts in the system</h5>
+</ng-template>
+
+<ng-template #completeCart>
+  <td></td>
+</ng-template>

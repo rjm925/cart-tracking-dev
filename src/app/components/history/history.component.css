@@ -1,0 +1,17 @@
+.text-secondary {
+  padding-top: 14px;
+}
+
+.card-header, .card-body {
+  padding: 5px;
+}
+
+@media only screen and (min-width: 600px) {
+  .col-md-5 {
+    padding: 0px 0px 0px 15px;
+  }
+  
+  .col-md-7 {
+    padding: 0px 15px 0px 5px;
+  }
+}

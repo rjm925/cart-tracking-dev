@@ -1,0 +1,123 @@
+<div class="card mb-3">
+  <div class="card-header">
+    Add a Cart
+  </div>
+  <div class="card-body">
+    <form #cartForm="ngForm" (ngSubmit)="onSubmit(cartForm)" class="form-inline">
+      <div class="row ml-1">
+        <div class="form-group">
+          <label for="cartNumber">Number</label>
+          <input 
+            type="number"
+            class="form-control"
+            name="cartNumber"
+            #cartNumber="ngModel"
+            [(ngModel)]="cart.cartNumber"
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="picker">Picker</label>
+          <select 
+            class="form-control"
+            name="picker"
+            #cartPicker="ngModel"
+            [(ngModel)]="cart.picker"
+          >
+            <option value=""></option>
+            <optgroup *ngIf="testers?.length > 0" label="Testers">
+                <option *ngFor="let tester of testers" value="Tester - {{ tester.name }}">{{ tester.name }}</option>
+            </optgroup>  
+            <optgroup label="Employees">
+                <option *ngFor="let employee of employees" value="{{ employee.name }}">{{ employee.name }}</option>
+            </optgroup>            
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="timePick">Picked</label>
+          <input
+            type="time" 
+            class="form-control"
+            name="timePick"
+            #carttimePick="ngModel"
+            [(ngModel)]="cart.timePick"
+          >
+        </div>
+      </div>
+
+      <div class="row ml-1">
+        <div class="form-group">
+          <label for="processor">Processor</label>
+          <select 
+            class="form-control"
+            name="processor"
+            #cartPicker="ngModel"
+            [(ngModel)]="cart.processor"
+          >
+            <option value=""></option>
+            <optgroup *ngIf="testers?.length > 0" label="Testers">
+                <option *ngFor="let tester of testers" value="Tester - {{ tester.name }}">{{ tester.name }}</option>
+            </optgroup>  
+            <optgroup label="Employees">
+                <option *ngFor="let employee of employees" value="{{ employee.name }}">{{ employee.name }}</option>
+            </optgroup>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="timeStart">Given</label>
+          <input
+            type="time" 
+            class="form-control"
+            name="timeStart"
+            #carttimePick="ngModel"
+            [(ngModel)]="cart.timeStart"
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="timeFinish">Finished</label>
+          <input
+            type="time" 
+            class="form-control"
+            name="timeFinish"
+            #carttimePick="ngModel"
+            [(ngModel)]="cart.timeFinish"
+          >
+        </div>
+      </div>
+
+      <div class="row ml-1">
+        <div class="form-group">
+          <label for="type">Type</label>
+          <select 
+            class="form-control"
+            name="type"
+            #cartType="ngModel"
+            [(ngModel)]="cart.type"
+          >
+            <option value=""></option>
+            <option value="Singles">Singles</option>
+            <option value="Multiples">Multiples</option>
+            <option value="Long Order">Long Order</option>
+            <option value="Backorders">Backorders</option>
+            <option value="ACs/Reprint">ACs/Reprint</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="notes">Notes</label>
+          <textarea
+            class="form-control"
+            name="notes"
+            #cartNotes="ngModel"
+            [(ngModel)]="cart.notes"
+          >
+          </textarea>
+        </div>
+        <input type="submit" value="Submit" class="btn btn-primary btn-block">
+      </div>      
+    </form>
+  </div>
+</div>

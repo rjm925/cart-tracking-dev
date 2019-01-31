@@ -1,0 +1,143 @@
+<div class="card mb-3" id="search">
+  <div class="card-header">
+    Search
+  </div>
+  <div class="card-body">
+    <form #searchForm="ngForm" class="form-inline" (ngSubmit)="onSearch(searchForm)">
+      <div class="form-group">
+        <label for="name" class="mr-1">Name</label>
+        <select
+          name="name"
+          class="form-control"
+          [(ngModel)]="name"
+        >
+          <option value=""></option>
+          <optgroup *ngIf="testers?.length > 0" label="Testers">
+              <option *ngFor="let tester of testers" value="Tester - {{ tester.name }}">{{ tester.name }}</option>
+          </optgroup>  
+          <optgroup label="Employees">
+              <option *ngFor="let employee of employees" value="{{ employee.name }}">{{ employee.name }}</option>
+          </optgroup>
+        </select>
+      </div>
+      <span class="ml-3 mr-3">AND / OR</span>
+      <div class="form-group">
+        <label for="date" class="mr-1">Date</label>
+        <input
+          type="date"
+          name="date"
+          class="form-control"
+          [(ngModel)]="date"
+        >
+      </div>
+      <input type="submit" class="btn btn-primary ml-3" value="Search">
+    </form>
+  </div>
+</div>
+
+<div class="card mb-3 " id="stats">
+  <div class="card-header bg-secondary text-white" (click)="showStats = !showStats">
+    <strong>
+      <i [ngClass]="showStats ? 'fa fa-minus-circle' : 'fa fa-plus-circle'"></i>
+      <span *ngIf="!showStats"> Show Stats</span>
+      <span *ngIf="showStats"> Hide Stats</span>
+    </strong>    
+  </div>
+  <div class="card-body" *ngIf="showStats">
+    <div class="row">
+      <div [ngClass]="table2.length > 0  ? 'table-responsive col-md-5' : 'table-responsive col-md-12'">
+        <table class="table table-sm">
+          <thead class="thead-dark">
+            <tr>
+              <th *ngIf="columns[0]">Name</th>
+              <th *ngIf="columns[1]">Date</th>
+              <th *ngIf="columns[2]">Total</th>
+              <th *ngIf="columns[3]">Picked</th>
+              <th *ngIf="columns[4]">Processed</th>
+              <th *ngIf="columns[5]">Speed</th>
+            </tr>
+            <tr *ngFor="let stat of table1 | slice:0:employees.length">
+              <td *ngIf="columns[0]">{{ stat.name }}</td>
+              <td *ngIf="columns[1]">{{ stat.date }}</td>
+              <td *ngIf="columns[2]">{{ stat.number }}</td>
+              <td *ngIf="columns[3]">{{ stat.picked }}</td>
+              <td *ngIf="columns[4]">{{ stat.processed }}</td>
+              <td *ngIf="columns[5]">{{ stat.average }} mins</td>
+            </tr>
+          </thead>
+        </table>
+      </div>
+      <div class="table-responsive col-md-7" *ngIf="table2.length > 0">
+        <table class="table table-sm">
+            <thead class="thead-dark">
+              <tr>
+                <th>Name</th>
+                <th>Total</th>
+                <th>Picked</th>
+                <th>Processed</th>
+                <th>Speed</th>
+              </tr>
+              <tr *ngFor="let info of table2">
+                <td>{{ info.name }}</td>
+                <td>{{ info.total }}</td>
+                <td>{{ info.picked }}</td>
+                <td>{{ info.processed }}</td>
+                <td>{{ info.speed }} mins</td>
+              </tr>
+            </thead>
+          </table>
+      </div>
+    </div>    
+  </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+      <h2><i class="fa fa-shopping-cart"></i> Carts</h2>
+    </div>
+    <div class="col-md-6">
+      <h5 class="text-right text-secondary"><i class="fa fa-clock-o"></i> {{ this.average }} minutes per cart</h5>
+    </div>
+  </div>
+  <div class="table-responsive">
+    <table *ngIf="filteredCarts?.length > 0; else noCarts" class="table table-striped table-sm">
+      <thead class="thead-dark">
+        <tr>
+          <th></th>
+          <th>Date</th>
+          <th>Picker</th>
+          <th>Picked</th>
+          <th>Processor</th>
+          <th>Given</th>
+          <th>Finished</th>
+          <th>#</th>
+          <th>Time</th>
+          <th>Type</th>
+          <th>Notes</th>
+          <!-- <th></th> -->
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let cart of filteredCarts | slice:0:100">
+          <td>{{ cart.index }}</td>
+          <td>{{ cart.date | date:"shortDate" }}</td>        
+          <td>{{ cart.picker }}</td>
+          <td>{{ cart.timePick }}</td>
+          <td>{{ cart.processor }}</td>   
+          <td>{{ cart.timeStart }}</td>
+          <td>{{ cart.timeFinish }}</td>
+          <td>{{ cart.cartNumber }}</td>
+          <td>{{ cart.time }} mins</td>
+          <td>{{ cart.type }}</td>
+          <td>{{ cart.notes }}</td>
+          <!-- <td><i class="fa fa-trash" (click)="onDelete(cart)"></i></td> -->
+        </tr>
+      </tbody>
+    </table>
+  </div>  
+
+  <ng-template #noCarts>
+    <hr>
+    <h5>There are no carts in the system</h5>
+  </ng-template>
+  
