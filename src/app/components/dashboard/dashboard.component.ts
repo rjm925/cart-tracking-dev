@@ -28,22 +28,16 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     this.authService.getAuth().subscribe(auth => {
       if(auth) {
-        this.employeeService.getEmployees().subscribe(employees => {
-          this.employees = employees;
-          this.findUser(auth.email);
+        this.employeeService.getUser(auth.email).subscribe(employees => {
+          this.user = employees[0];
+
+          if(!this.user.canCreate) this.router.navigate(['/processor']);
+          else this.router.navigate(['/']);
         });
         this.isLoggedIn = true;
       } else {
         this.isLoggedIn = false;
       }
-    });    
-  }
-
-  findUser(email) {
-    var index = this.employees.map(function(x) {return x.email; }).indexOf(email);
-    this.user = this.employees[index];
-    if(!this.user.canCreate && this.user.canCreate != null) {
-      this.router.navigate(['/processor']);
-    }
+    });      
   }
 }

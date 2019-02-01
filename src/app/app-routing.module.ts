@@ -18,7 +18,7 @@ const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'settings', component: SettingsComponent, canActivate:[AuthGuard]},
   {path: 'processors', component: ProcessorsComponent, canActivate:[AuthGuard]},
-  {path: 'processor', component: ProcessorCartsComponent},
+  {path: 'processor', component: ProcessorCartsComponent, canActivate:[AuthGuard]},
   {path: 'test-page', component: TestPageComponent},
   {path: '**', component: NotFoundComponent}
 ];

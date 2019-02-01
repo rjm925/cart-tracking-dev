@@ -16,6 +16,8 @@ import { Router } from '@angular/router';
 })
 
 export class HistoryComponent implements OnInit {
+  name: string;
+  date: string;
   user: Employee = {
     id: null,
     name: null,
@@ -43,19 +45,26 @@ export class HistoryComponent implements OnInit {
   ngOnInit() {    
     this.authService.getAuth().subscribe(auth => {
       if(auth) {
-        this.employeeService.getEmployees().subscribe(employees => {
-          this.employees = employees;
-          this.findUser(auth.email);
+        this.employeeService.getUser(auth.email).subscribe(employees => {
+          this.user = employees[0];
+
+          if(!this.user.canCreate && this.user.canCreate != null) this.router.navigate(['/processor']);
+          else this.getServiceData();
         });
+      } else {
+        this.getServiceData();
       }
-    });
+    });    
+  }
+
+  getServiceData() {
     this.cartService.getCarts().subscribe(carts => {
       this.carts = carts
       this.filteredCarts = carts;
       this.calculateSpeed();
       this.countCarts();
       // this.changeName();
-    });
+    });    
     this.employeeService.getEmployees().subscribe(employees => {
       this.employees = employees;
       this.allStats(undefined, undefined);
@@ -79,47 +88,36 @@ export class HistoryComponent implements OnInit {
     this.cartService.selectedCart = this.cartService.cartSource.asObservable();
   }
 
-  findUser(email) {
-    var index = this.employees.map(function(x) {return x.email; }).indexOf(email);
-    this.user = this.employees[index];
-    if(!this.user.canCreate && this.user.canCreate != null) {
-      this.router.navigate(['/processor']);
-    }
-  }
-
-  onSearch(value) {
-    var name = value._directives[0].model;
-    var date = value._directives[1].model;
-    
-    if(date != undefined) {
-      date = new Date(value._directives[1].model.replace(/-/g, '\/')).toLocaleDateString();
+  onSearch() {    
+    if(this.date != undefined) {
+      var searchDate = new Date(this.date.replace(/-/g, '\/')).toLocaleDateString();
     } else {
-      date = "Invalid Date";
+      searchDate = "Invalid Date";
     }
-    if((name == undefined || name == "") && date == "Invalid Date") {
+    if((this.name == undefined || this.name == "") && searchDate == "Invalid Date") {
       this.filteredCarts = this.carts;
       this.allStats(undefined, undefined);
-    } else if(name != undefined && name != "") {
-      if(name == "Tester") {
-        if(date == "Invalid Date") {
-          this.filteredCarts = this.carts.filter(cart => cart.picker.includes(name) || cart.processor.includes(name));
-          this.allStats(name, undefined);
+    } else if(this.name != undefined && this.name != "") {
+      if(this.name == "Tester") {
+        if(searchDate == "Invalid Date") {
+          this.filteredCarts = this.carts.filter(cart => cart.picker.includes(this.name) || cart.processor.includes(this.name));
+          this.allStats(this.name, undefined);
         } else {
-          this.filteredCarts = this.carts.filter(cart => (cart.picker.includes(name) || cart.processor.includes(name)) && cart.date == date);
-          this.allStats(name, date);
+          this.filteredCarts = this.carts.filter(cart => (cart.picker.includes(this.name) || cart.processor.includes(this.name)) && cart.date == searchDate);
+          this.allStats(this.name, searchDate);
         }
       } else {
-        if(date == "Invalid Date") {
-          this.filteredCarts = this.carts.filter(cart => cart.picker == name || cart.processor == name);
-          this.allStats(name, undefined);
+        if(searchDate == "Invalid Date") {
+          this.filteredCarts = this.carts.filter(cart => cart.picker == this.name || cart.processor == this.name);
+          this.allStats(this.name, undefined);
         } else {
-          this.filteredCarts = this.carts.filter(cart => (cart.picker == name || cart.processor == name) && cart.date == date);
-          this.allStats(name, date);
+          this.filteredCarts = this.carts.filter(cart => (cart.picker == this.name || cart.processor == this.name) && cart.date == searchDate);
+          this.allStats(this.name, searchDate);
         }
       }  
     } else {
-      this.filteredCarts = this.carts.filter(cart => cart.date == date);
-      this.allStats(undefined, date);
+      this.filteredCarts = this.carts.filter(cart => cart.date == searchDate);
+      this.allStats(undefined, searchDate);
     }
     this.calculateSpeed();
   }

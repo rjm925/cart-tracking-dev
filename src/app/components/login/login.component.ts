@@ -37,9 +37,8 @@ export class LoginComponent implements OnInit {
   onSubmit() {
     this.authService.login(this.email, this.password)
       .then(res => {
-        this.employeeService.getEmployees().subscribe(employees => {
+        this.employeeService.getUser(res).subscribe(employees => {
           this.employees = employees;
-          this.findUser((<any>res).user.email);
 
           if(!this.user.canCreate) this.router.navigate(['/processor']);
           else this.router.navigate(['/']);
@@ -48,10 +47,5 @@ export class LoginComponent implements OnInit {
       .catch(err => {
         alert(err);
       })
-  }
-
-  findUser(email) {
-    var index = this.employees.map(function(x) {return x.email; }).indexOf(email);
-    this.user = this.employees[index];
   }
 }

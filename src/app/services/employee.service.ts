@@ -19,11 +19,23 @@ export class EmployeeService {
   });
   selectedEmployee = this.employeeSource.asObservable();
 
-  constructor(private afs: AngularFirestore) {
-    this.employeesCollection = this.afs.collection('Employees', ref => ref.orderBy('name','asc'));
+  constructor(private afs: AngularFirestore) {}
+
+  getUser(email) {
+    this.employeesCollection = this.afs.collection('Employees', ref => ref.where("email","==",email));
+    this.employees = this.employeesCollection.snapshotChanges().pipe(
+      map(changes => changes.map(action => {
+        const data = action.payload.doc.data() as Employee;
+        data.id = action.payload.doc.id;
+        return data;
+      }))
+    );
+  
+    return this.employees;
   }
 
   getEmployees(): Observable<Employee[]> {
+    this.employeesCollection = this.afs.collection('Employees', ref => ref.orderBy('name','asc'));
     // Get carts by id
     this.employees = this.employeesCollection.snapshotChanges().pipe(
       map(changes => changes.map(action => {

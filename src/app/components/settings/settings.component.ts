@@ -39,26 +39,23 @@ export class SettingsComponent implements OnInit {
   ngOnInit() {
     this.authService.getAuth().subscribe(auth => {
       if(auth) {
-        this.employeeService.getEmployees().subscribe(employees => {
-          this.employees = employees;
-          this.findUser(auth.email);
+        this.employeeService.getUser(auth.email).subscribe(employees => {
+          this.user = employees[0];
+
+          if(!this.user.canCreate) this.router.navigate(['/processor']);
+          else this.getServiceData();
         });
       }
     });
+  }
+
+  getServiceData() {
     this.employeeService.getEmployees().subscribe(employees => {
       this.employees = employees;
     });
     this.testerService.getTesters().subscribe(testers => {
       this.testers = testers;
     });
-  }
-
-  findUser(email) {
-    var index = this.employees.map(function(x) {return x.email; }).indexOf(email);
-    this.user = this.employees[index];
-    if(!this.user.canCreate) {
-      this.router.navigate(['/']);
-    }
   }
 
   addEmployee({value, valid}: {value: Employee, valid: boolean}) {

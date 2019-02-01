@@ -3,13 +3,14 @@
     Search
   </div>
   <div class="card-body">
-    <form #searchForm="ngForm" class="form-inline" (ngSubmit)="onSearch(searchForm)">
+    <form #searchForm="ngForm" class="form-inline">
       <div class="form-group">
         <label for="name" class="mr-1">Name</label>
         <select
           name="name"
           class="form-control"
           [(ngModel)]="name"
+          (change)="onSearch()"
         >
           <option value=""></option>
           <optgroup *ngIf="testers?.length > 0" label="Testers">
@@ -28,9 +29,9 @@
           name="date"
           class="form-control"
           [(ngModel)]="date"
+          (change)="onSearch()"
         >
       </div>
-      <input type="submit" class="btn btn-primary ml-3" value="Search">
     </form>
   </div>
 </div>

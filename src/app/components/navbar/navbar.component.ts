@@ -10,7 +10,6 @@ import { EmployeeService } from '../../services/employee.service';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
-  employees: Employee[];
   isLoggedIn: boolean;
   user: Employee = {
     id: null,
@@ -27,20 +26,14 @@ export class NavbarComponent implements OnInit {
   ngOnInit() {
     this.authService.getAuth().subscribe(auth => {
       if(auth) {
-        this.employeeService.getEmployees().subscribe(employees => {
-          this.employees = employees;
-          this.findUser(auth.email);
+        this.employeeService.getUser(auth.email).subscribe(employees => {
+          this.user = employees[0];
         });
         this.isLoggedIn = true;
       } else {
         this.isLoggedIn = false;
       }
     });
-  }
-
-  findUser(email) {
-    var index = this.employees.map(function(x) {return x.email; }).indexOf(email);
-    this.user = this.employees[index];
   }
 
   onLogoutClick() {

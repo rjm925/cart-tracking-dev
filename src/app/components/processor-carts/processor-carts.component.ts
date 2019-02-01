@@ -12,7 +12,6 @@ import { Employee } from '../../models/Employee';
   styleUrls: ['./processor-carts.component.css']
 })
 export class ProcessorCartsComponent implements OnInit {
-  employees: Employee[];
   user: Employee = {
     id: null,
     name: null,
@@ -48,22 +47,14 @@ export class ProcessorCartsComponent implements OnInit {
   ngOnInit() {
     this.authService.getAuth().subscribe(auth => {
       if(auth) {
-        this.employeeService.getEmployees().subscribe(employees => {
-          this.employees = employees;
-          this.findUser(auth.email);
+        this.employeeService.getUser(auth.email).subscribe(employees => {
+          this.user = employees[0];
+          this.cartService.getProcessorCarts(this.user.name).subscribe(carts => {      
+            this.carts = carts;
+            this.findTime();
+          });
         });
-      } else {
-        this.router.navigate(['/']);
       }
-    });
-  }
-
-  findUser(email) {
-    var index = this.employees.map(function(x) {return x.email; }).indexOf(email);
-    this.user = this.employees[index];
-    this.cartService.getProcessorCarts(this.user.name).subscribe(carts => {      
-      this.carts = carts;
-      this.findTime();
     });
   }
 

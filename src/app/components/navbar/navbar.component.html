@@ -9,12 +9,12 @@
         <li class="nav-item" *ngIf="!isLoggedIn || user.canCreate">
           <a routerLink="/history" class="nav-link">History</a>
         </li>
-        <!-- <li class="nav-item" *ngIf="user.canCreate">
+        <li class="nav-item" *ngIf="user.canCreate">
           <a routerLink="/processors" class="nav-link">Processors</a>
         </li>
         <li class="nav-item" *ngIf="user.canCreate">
           <a routerLink="/processor" class="nav-link">Cart Processing</a>
-        </li> -->
+        </li>
       </ul>
       <ul class="navbar-nav ml-auto">
         <li class="nav-item" *ngIf="!isLoggedIn">
